@@ -128,6 +128,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "django.contrib.staticfiles",
     "quiz",
+    "catalog",
 ]
 
 MIDDLEWARE = [
@@ -178,6 +179,8 @@ USE_I18N = True
 USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STATIC_URL = "static/"  # without it, the test server (LiveServerTestCase) answers 500 to every request
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # One page size for every listing of the project: the API (below) and the web
 # interface use this same number, so «Anterior/Siguiente» means the same thing in
