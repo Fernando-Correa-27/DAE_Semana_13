@@ -1,0 +1,53 @@
+.premiere-skeleton {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.premiere-skeleton__poster {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+}
+
+.premiere-skeleton__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 200px;
+  padding: var(--space-4);
+}
+
+.premiere-skeleton__line {
+  height: 12px;
+  border-radius: var(--radius-full);
+}
+
+.premiere-skeleton__line--title {
+  width: 82%;
+  height: 20px;
+}
+
+.premiere-skeleton__line--meta {
+  width: 46%;
+}
+
+.premiere-skeleton__line--medium {
+  width: 68%;
+}
+
+.premiere-skeleton__chips {
+  display: flex;
+  gap: var(--space-2);
+  margin-block: var(--space-1);
+}
+
+.premiere-skeleton__chip {
+  width: 54px;
+  height: 22px;
+  border-radius: var(--radius-full);
+}

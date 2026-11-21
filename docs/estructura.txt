@@ -1,0 +1,63 @@
+dae-s12-servicios-web/
+├── backend/                         # API Django REST del laboratorio 8
+│   ├── agent/                       # integración opcional con un LLM
+│   ├── config/
+│   │   ├── settings.py              # CORS por variable de entorno
+│   │   ├── urls.py                  # /api/, /api/schema/, /api/docs/
+│   │   ├── middleware.py
+│   │   └── wsgi.py
+│   ├── quiz/
+│   │   ├── management/commands/seed_quiz.py
+│   │   ├── tests/                   # incluye test_cors.py
+│   │   ├── models.py                # Exam, Question, Choice
+│   │   ├── permissions.py           # AgentPermission
+│   │   ├── serializers.py
+│   │   ├── services.py
+│   │   ├── urls.py                  # router: exams, questions, options
+│   │   ├── views.py
+│   │   └── web_urls.py
+│   ├── docs/
+│   ├── .env.example
+│   ├── manage.py
+│   └── requirements.txt
+├── frontend/                        # React + Vite del laboratorio 11
+│   ├── public/
+│   ├── scripts/
+│   │   └── capture-s12-evidence.mjs # capturas y pruebas con Playwright
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── ExamForm/
+│   │   │   ├── ExamsError/
+│   │   │   ├── ExamsLayout/
+│   │   │   ├── ExamsSkeleton/
+│   │   │   ├── ExamsTable/
+│   │   │   ├── Header/              # menú con enlace a /exams
+│   │   │   └── ...
+│   │   ├── hooks/
+│   │   │   ├── useExams.js
+│   │   │   ├── useTheme.js
+│   │   │   └── ...
+│   │   ├── pages/
+│   │   │   ├── ExamCreatePage/
+│   │   │   └── ExamsPage/
+│   │   ├── services/
+│   │   │   ├── apiClient.js         # instancia única de Axios
+│   │   │   ├── examsService.js      # listar, crear y eliminar
+│   │   │   └── premieresService.js
+│   │   ├── styles/
+│   │   │   └── exams.css
+│   │   ├── utils/
+│   │   │   ├── apiError.js
+│   │   │   └── constants.js
+│   │   ├── App.jsx                  # cartelera de cine (sin cambios de fondo)
+│   │   └── main.jsx                 # BrowserRouter y rutas
+│   ├── .env.example
+│   ├── package.json
+│   └── vite.config.js
+├── docs/
+│   ├── capturas/                    # capturas de los estados y errores
+│   ├── evidencias.md
+│   └── estructura.txt
+├── ENTREGABLE.md
+├── README.md
+└── .gitignore

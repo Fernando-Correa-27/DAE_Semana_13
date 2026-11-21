@@ -1,0 +1,95 @@
+.exams-table-wrapper {
+  overflow-x: auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.exams-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.exams-table th,
+.exams-table td {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border-subtle);
+  vertical-align: middle;
+}
+
+.exams-table th {
+  color: var(--color-text-muted);
+  background: var(--color-surface-hover);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.exams-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.exams-table tbody tr:hover {
+  background: var(--glass-bg);
+}
+
+.exams-table__title {
+  font-weight: var(--font-weight-medium);
+}
+
+.exams-table__delete {
+  color: var(--color-danger);
+  border-color: rgba(239, 68, 68, 0.4);
+  background: transparent;
+}
+
+.exams-table__delete:hover:not(:disabled) {
+  color: #fff;
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.exams-table__delete:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+@media (max-width: 720px) {
+  .exams-table thead {
+    display: none;
+  }
+
+  .exams-table,
+  .exams-table tbody,
+  .exams-table tr,
+  .exams-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .exams-table tr {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .exams-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-2) var(--space-4);
+    border: none;
+    text-align: right;
+  }
+
+  .exams-table td::before {
+    content: attr(data-label);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+}

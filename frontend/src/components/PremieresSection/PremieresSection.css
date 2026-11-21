@@ -1,0 +1,150 @@
+/* ==========================================================================
+   PremieresSection - loading, error and carousel states
+   ========================================================================== */
+
+.premieres {
+  padding: var(--space-16) var(--space-6) var(--space-12);
+}
+
+.premieres__header {
+  max-width: 62ch;
+  margin-bottom: var(--space-8);
+}
+
+.premieres__subtitle {
+  margin-top: var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+}
+
+.premieres__body {
+  position: relative;
+  min-height: 200px;
+}
+
+/* Loading placeholders */
+.premieres__skeletons {
+  display: grid;
+  grid-template-columns: repeat(var(--premiere-columns, 1), minmax(0, 1fr));
+  gap: var(--space-6);
+}
+
+/* Error and empty feedback */
+.premieres__feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+}
+
+.premieres__feedback-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  color: var(--color-danger);
+  background: var(--color-chip-bg);
+  border: 1px solid var(--color-chip-border);
+  border-radius: var(--radius-full);
+}
+
+.premieres__feedback-icon svg {
+  width: var(--icon-xl);
+  height: var(--icon-xl);
+}
+
+.premieres__feedback-title {
+  font-size: var(--font-size-xl);
+}
+
+.premieres__feedback-message {
+  max-width: 48ch;
+  color: var(--color-text-secondary);
+}
+
+.premieres__feedback .btn {
+  margin-top: var(--space-2);
+}
+
+/* Carousel */
+.premieres__carousel {
+  --swiper-navigation-color: var(--color-text);
+  --swiper-navigation-size: 18px;
+  --swiper-pagination-color: var(--color-primary);
+  --swiper-pagination-bullet-inactive-color: var(--color-text-muted);
+  --swiper-pagination-bullet-inactive-opacity: 0.55;
+  padding-inline: var(--space-2);
+}
+
+.premieres__carousel .swiper-slide {
+  height: auto;
+}
+
+.premieres__carousel .swiper-button-prev,
+.premieres__carousel .swiper-button-next {
+  /* Keep the controls over the poster area, clear of the score badge. */
+  top: 35%;
+  width: 44px;
+  height: 44px;
+  color: var(--color-text);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast),
+    border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.premieres__carousel .swiper-button-prev:hover,
+.premieres__carousel .swiper-button-next:hover,
+.premieres__carousel .swiper-button-prev:focus-visible,
+.premieres__carousel .swiper-button-next:focus-visible {
+  color: var(--color-on-primary);
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.premieres__carousel .swiper-button-prev::after,
+.premieres__carousel .swiper-button-next::after {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.premieres__carousel .swiper-pagination {
+  position: static;
+  margin-top: var(--space-6);
+}
+
+.premieres__carousel .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  transition: background-color var(--transition-fast), opacity var(--transition-fast);
+}
+
+.premieres__carousel .swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .premieres {
+    padding: var(--space-12) var(--space-4);
+  }
+
+  .premieres__skeletons {
+    gap: var(--space-4);
+  }
+
+  .premieres__carousel .swiper-button-prev,
+  .premieres__carousel .swiper-button-next {
+    width: 36px;
+    height: 36px;
+  }
+}

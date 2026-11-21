@@ -1,0 +1,211 @@
+/* ==========================================================================
+   Design tokens - global CSS custom properties
+   Brand: dark cinematic red, gold rating accent, glass surfaces.
+   ========================================================================== */
+
+/* ---- Dark theme (default) ---- */
+:root {
+  /* Brand and semantic colors */
+  --color-primary: #e50914;
+  --color-primary-hover: #ff1a25;
+  --color-primary-glow: rgba(229, 9, 20, 0.4);
+  --color-background: #0b0b0f;
+  --color-surface: #161622;
+  --color-surface-hover: #1e1e30;
+  --color-surface-light: #1a1a2e;
+  --color-text: #f0f0f5;
+  --color-text-secondary: #b0b0c0;
+  --color-text-muted: #707080;
+  --color-border: #2a2a3e;
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-gold: #ffd700;
+  --color-rating: #f5c518;
+  --color-rating-glow: rgba(245, 197, 24, 0.3);
+  --color-age-badge: #e50914;
+  --color-on-primary: #ffffff;
+  --color-on-secondary: #1e1e2f;
+  --color-focus-ring: #60a5fa;
+  --color-danger: #ef4444;
+  --color-success: #22c55e;
+  --color-overlay: rgba(0, 0, 0, 0.78);
+  --color-overlay-soft: rgba(0, 0, 0, 0.55);
+  --color-hero-overlay: linear-gradient(
+    to top,
+    rgba(11, 11, 15, 1) 0%,
+    rgba(11, 11, 15, 0.85) 30%,
+    rgba(11, 11, 15, 0.55) 60%,
+    rgba(11, 11, 15, 0.2) 100%
+  );
+
+  /* Form controls */
+  --color-input-bg: #161622;
+  --color-input-border: #2a2a3e;
+  --color-input-placeholder: #707080;
+
+  /* Toast and skeleton feedback */
+  --color-toast-bg: #1e1e30;
+  --color-toast-text: #f0f0f5;
+  --color-toast-border: rgba(255, 255, 255, 0.12);
+  --color-skeleton-base: #1f1f2e;
+  --color-skeleton-highlight: #2c2c42;
+
+  /* Glass effects */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --color-chip-bg: rgba(255, 255, 255, 0.05);
+  --color-chip-border: rgba(255, 255, 255, 0.1);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 20px 48px rgba(0, 0, 0, 0.7);
+  --shadow-2xl: 0 28px 72px rgba(0, 0, 0, 0.8);
+  --shadow-glow: 0 0 24px var(--color-primary-glow);
+  --shadow-star-glow: 0 0 12px var(--color-rating-glow);
+
+  /* Motion */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --animation-duration: 300ms;
+  --animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Blur */
+  --blur-sm: blur(8px);
+  --blur-md: blur(12px);
+
+  /* Layout */
+  --max-width: 1200px;
+  --header-height: 64px;
+  --modal-max-width: 960px;
+  --modal-max-height: min(90vh, 860px);
+  --space-9: 2.25rem;
+
+  /* Layering */
+  --z-index-header: 100;
+  --z-index-modal: 1000;
+  --z-index-toast: 1100;
+
+  /* Icon and control sizing */
+  --icon-xs: 12px;
+  --icon-sm: 16px;
+  --icon-md: 20px;
+  --icon-lg: 24px;
+  --icon-xl: 32px;
+  --control-height-sm: 2.25rem;
+  --control-height-md: 2.75rem;
+  --control-height-lg: 3.25rem;
+}
+
+/* ---- Light theme (pastel) ---- */
+[data-theme='light'] {
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-primary-glow: rgba(124, 58, 237, 0.2);
+  --color-background: #f5f0f8;
+  --color-surface: #ffffff;
+  --color-surface-hover: #ede4f5;
+  --color-surface-light: #ddd0ee;
+  --color-text: #1a1a2e;
+  --color-text-secondary: #4a4a5a;
+  --color-text-muted: #6b6b80;
+  --color-border: #d8d0e0;
+  --color-border-subtle: rgba(0, 0, 0, 0.08);
+  --color-gold: #b8860b;
+  --color-rating: #b8860b;
+  --color-rating-glow: rgba(184, 134, 11, 0.2);
+  --color-age-badge: #dc2626;
+  --color-on-primary: #ffffff;
+  --color-on-secondary: #1a1a2e;
+  --color-focus-ring: #6d28d9;
+  --color-overlay: rgba(20, 16, 32, 0.72);
+  --color-overlay-soft: rgba(20, 16, 32, 0.45);
+  --color-hero-overlay: linear-gradient(
+    to top,
+    rgba(245, 240, 248, 1) 0%,
+    rgba(245, 240, 248, 0.88) 30%,
+    rgba(245, 240, 248, 0.55) 60%,
+    rgba(245, 240, 248, 0.15) 100%
+  );
+
+  --color-input-bg: #ffffff;
+  --color-input-border: #d8d0e0;
+  --color-input-placeholder: #6b6b80;
+
+  --color-toast-bg: #ffffff;
+  --color-toast-text: #1a1a2e;
+  --color-toast-border: rgba(26, 26, 46, 0.12);
+  --color-skeleton-base: #e8e1f0;
+  --color-skeleton-highlight: #f7f3fb;
+
+  --glass-bg: rgba(124, 58, 237, 0.06);
+  --glass-border: rgba(124, 58, 237, 0.15);
+  --color-chip-bg: rgba(124, 58, 237, 0.08);
+  --color-chip-border: rgba(124, 58, 237, 0.18);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 20px 48px rgba(0, 0, 0, 0.15);
+  --shadow-2xl: 0 28px 72px rgba(0, 0, 0, 0.22);
+  --shadow-glow: 0 0 24px var(--color-primary-glow);
+  --shadow-star-glow: 0 0 12px var(--color-rating-glow);
+}
+
+/* ---- Typography and spacing ---- */
+:root,
+[data-theme='light'] {
+  --font-family-heading: 'Righteous', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-family-body: 'Poppins', 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 2.75rem;
+  --font-size-4xl: 3.5rem;
+  --font-size-5xl: 4.5rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms ease;
+    --transition-base: 0ms ease;
+    --transition-slow: 0ms ease;
+    --animation-duration: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
