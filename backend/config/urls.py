@@ -1,9 +1,12 @@
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
+    # The admin site manages the catalog and the quiz records.
+    path("admin/", admin.site.urls),
     # The web interface (HTML, session cookie). The API router is not touched.
     path("", include("quiz.web_urls")),
     # Catalog resources (categories and products) live next to the quiz API.

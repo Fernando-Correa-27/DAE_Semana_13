@@ -116,6 +116,7 @@ CONTENT_SECURITY_POLICY_DOCS = (
 CSP_EXEMPT_PREFIXES = ("/api/docs/",)
 
 INSTALLED_APPS = [
+    "django.contrib.admin",
     "django.contrib.auth",
     # Web interface (ADR-0001): session cookie for the browser, flash messages
     # after the POST/redirect pattern and static files served from the app.
