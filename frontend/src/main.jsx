@@ -14,6 +14,9 @@ import './components/MovieList/MovieList.css'
 import App from './App.jsx'
 import ExamsPage from './pages/ExamsPage/ExamsPage.jsx'
 import ExamCreatePage from './pages/ExamCreatePage/ExamCreatePage.jsx'
+import CatalogPage from './pages/CatalogPage/CatalogPage.jsx'
+import ProductCreatePage from './pages/ProductCreatePage/ProductCreatePage.jsx'
+import ProductEditPage from './pages/ProductEditPage/ProductEditPage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -22,6 +25,9 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />} />
         <Route path="/exams" element={<ExamsPage />} />
         <Route path="/exams/new" element={<ExamCreatePage />} />
+        <Route path="/catalog" element={<CatalogPage />} />
+        <Route path="/catalog/new" element={<ProductCreatePage />} />
+        <Route path="/catalog/:id/edit" element={<ProductEditPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
