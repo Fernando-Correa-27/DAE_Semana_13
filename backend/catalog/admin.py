@@ -31,8 +31,10 @@ class ProductAdmin(admin.ModelAdmin):
     def image_preview(self, obj):
         if not obj.image:
             return "Sin imagen"
+        # The project's CSP blocks inline styles, so the thumbnail is sized
+        # with plain HTML attributes instead of a style attribute.
         return format_html(
-            '<img src="{}" alt="{}" style="height: 48px; border-radius: 6px;" />',
+            '<img src="{}" alt="{}" width="64" height="48" />',
             obj.image.url,
             obj.name,
         )
