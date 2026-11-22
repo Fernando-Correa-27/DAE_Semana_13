@@ -33,6 +33,9 @@ function Header({ theme, onToggleTheme, favoritesCount = 0, showFavorites = true
           <Link to="/exams" className="header__link header__link--exams">
             {UI_TEXT.NAV_EXAMS}
           </Link>
+          <Link to="/catalog" className="header__link header__link--catalog">
+            {UI_TEXT.NAV_CATALOG}
+          </Link>
         </nav>
 
         <div className="header__actions">

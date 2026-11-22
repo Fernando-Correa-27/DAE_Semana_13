@@ -102,7 +102,8 @@
   border-radius: var(--radius-sm);
 }
 
-.header__link--exams {
+.header__link--exams,
+.header__link--catalog {
   color: var(--color-primary);
   font-weight: var(--font-weight-semibold);
 }
