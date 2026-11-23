@@ -766,7 +766,7 @@ DAE_Semana_13/
 | Comprobación | Resultado |
 |---|---|
 | Migraciones aplicadas y catálogo sembrado | 3 categorías y 9 productos |
-| Pruebas del backend | 8 pruebas aprobadas |
+| Pruebas del backend | 380 pruebas aprobadas (8 del catálogo + las de la semana 12) |
 | Pruebas del frontend | 71 pruebas aprobadas |
 | Lint del frontend | Sin errores (`oxlint`) |
 | Build de producción | Correcto (`vite build`) |
