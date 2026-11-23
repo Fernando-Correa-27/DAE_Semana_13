@@ -1,35 +1,70 @@
-# DAE S12 — Servicios Web
+# DAE Semana 13 — Catálogo de comercio electrónico
 
-**Repositorio:** https://github.com/Fernando-Correa-27/DAE_Semana_12
+Aplicación de comercio electrónico del **Laboratorio 13**, construida sobre el proyecto de la semana 12. El repositorio reúne dos proyectos que se hablan por HTTP:
 
-Integración de la API REST de cuestionarios del **laboratorio 8** (Django + Django REST Framework) con la aplicación React de la **cartelera de cine** del laboratorio 11. El resultado es un único repositorio con dos lados: `backend/` y `frontend/`.
+- **Servidor (`backend/`)**: API REST en Django + Django REST Framework. Añade la app `catalog` con categorías y productos, imágenes servidas desde `MEDIA_ROOT`, admin de Django y datos semilla reproducibles.
+- **Cliente (`frontend/`)**: aplicación React + Vite. Consume la API mediante una capa de servicios con Axios y ofrece catálogo, filtro por categoría, alta, edición y borrado sin recargar la página.
 
-La sección nueva consume el recurso **exámenes** desde React con Axios: listar, crear y eliminar, con estados de carga, datos y error, validación por campo y paginación. La cartelera de cine se conserva; solo se amplió el menú de navegación.
+La API de cuestionarios de la semana 12 se conserva y sigue funcionando con su autenticación por token. El catálogo es de solo lectura pública para el cliente (sin token), de modo que la práctica no depende de credenciales.
 
-## Estructura
+## Reparto de responsabilidades
+
+| Lado | Responsabilidad | Puerto por defecto |
+|---|---|---|
+| Django (`backend/`) | Modelos, migraciones, admin, serializadores, vistas, filtro `?category=`, imágenes y datos semilla | `8000` |
+| React (`frontend/`) | Rutas, componentes, estados de carga/error/vacío, formularios y llamadas HTTP | `5173` |
+
+El cliente espera la API en `http://127.0.0.1:8000/api`. El servidor solo acepta peticiones del origen exacto del cliente, `http://localhost:5173` (sin comodín). Si Vite arranca en otro puerto, hay que declararlo en `CORS_ALLOWED_ORIGINS`.
+
+## Estructura de carpetas
 
 ```text
-dae-s12-servicios-web/
-├── backend/     API Django REST (copia del laboratorio 8)
-├── frontend/    React + Vite (copia del laboratorio 11)
-├── docs/        evidencias, capturas y árbol del proyecto
-├── README.md
-└── ENTREGABLE.md
+DAE_Semana_13/
+├── backend/
+│   ├── catalog/
+│   │   ├── management/commands/seed_catalog.py   # 3 categorías + 9 productos
+│   │   ├── migrations/                           # migraciones versionadas
+│   │   ├── seed_images/                          # imágenes originales generadas con Pillow
+│   │   ├── tests/test_api.py                     # pruebas de la API del catálogo
+│   │   ├── admin.py
+│   │   ├── models.py                             # Category 1—N Product
+│   │   ├── serializers.py                        # categoría anidada + category_id de escritura
+│   │   ├── urls.py                               # DefaultRouter
+│   │   └── views.py                              # ModelViewSet, filtro y select_related
+│   ├── config/                                   # settings, urls, middleware CSP
+│   ├── media/                                    # imágenes subidas (ignorado por git)
+│   ├── quiz/                                     # app de la semana 12 (se conserva)
+│   ├── requirements.txt
+│   └── manage.py
+├── frontend/
+│   ├── scripts/capture-s13-evidence.mjs          # capturas de evidencia con Playwright
+│   ├── src/
+│   │   ├── components/                           # CatalogLayout, ProductCard, ProductForm…
+│   │   ├── hooks/                                # useProducts, useCategories, useProduct
+│   │   ├── pages/                                # CatalogPage, ProductCreatePage, ProductEditPage
+│   │   ├── services/                             # apiClient, productService, categoryService
+│   │   └── utils/
+│   ├── package.json
+│   └── vite.config.js
+├── entregable/
+│   ├── capturas/                                 # evidencia numerada 01–14
+│   ├── diagrama-catalogo.png
+│   └── ENTREGABLE.md
+└── README.md
 ```
-
-El árbol detallado está en `docs/estructura.txt`.
 
 ## Requisitos
 
 | Herramienta | Versión usada |
 |---|---|
 | Python | 3.15.2 |
+| Django | 6.1.3 |
 | Node.js | 26.13.1 |
 | npm | 11.20.0 |
 
-Dependencias Python en `backend/requirements.txt`; dependencias Node en `frontend/package.json`.
+Las dependencias de Python están en `backend/requirements.txt` (incluye **Pillow** para `ImageField` y para generar las imágenes semilla). Las de Node están en `frontend/package.json`.
 
-## Backend: puesta en marcha
+## Servidor: puesta en marcha
 
 Desde la raíz del repositorio:
 
@@ -39,165 +74,112 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py seed_quiz --show-tokens
-```
-
-> Si PowerShell bloquea la activación del entorno virtual, se puede usar directamente `.\.venv\Scripts\python.exe` en lugar de `python`.
-
-`seed_quiz --show-tokens` crea los datos de ejemplo y muestra dos tokens:
-
-- **Token de la persona** (`profe`): puede leer, crear, modificar y eliminar. Es el que debe usar el frontend.
-- **Token del agente** (`agente`): puede leer, crear y modificar, pero no eliminar.
-
-Los tokens son secretos locales: no se copian al repositorio.
-
-### Variables de entorno del backend
-
-| Variable | Valor por defecto | Uso |
-|---|---|---|
-| `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Orígenes exactos autorizados, separados por comas. Nunca `*`. |
-| `DJANGO_DEBUG` | `1` | `0` para desactivar el modo de desarrollo. |
-| `DJANGO_SECRET_KEY` | — | Obligatoria si `DJANGO_DEBUG=0`. |
-| `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1,testserver` | Hosts permitidos; obligatoria si `DJANGO_DEBUG=0`. |
-
-Ejemplo en PowerShell:
-
-```powershell
-$env:CORS_ALLOWED_ORIGINS = "http://localhost:5173"
-```
-
-### Arrancar la API
-
-```powershell
+python manage.py seed_catalog
 python manage.py runserver 127.0.0.1:8000
 ```
 
-Direcciones reales:
+Si PowerShell bloquea la activación del entorno virtual, se puede usar directamente `.\.venv\Scripts\python.exe` en lugar de `python`.
 
-| Recurso | Dirección |
-|---|---|
-| Base | `http://127.0.0.1:8000/api/` |
-| Exámenes | `http://127.0.0.1:8000/api/exams/` |
-| Preguntas | `http://127.0.0.1:8000/api/questions/` |
-| Opciones | `http://127.0.0.1:8000/api/options/` |
-| Contrato OpenAPI | `http://127.0.0.1:8000/api/schema/` |
-| Documentación | `http://127.0.0.1:8000/api/docs/` |
+La API queda en `http://127.0.0.1:8000/api/` y el admin en `http://127.0.0.1:8000/admin/`. Para entrar al admin hace falta un superusuario:
 
-Todas las rutas de recursos exigen `Authorization: Token <token>`. La paginación es de 5 elementos y devuelve `{count, next, previous, results}`.
+```powershell
+python manage.py createsuperuser
+```
 
-## Frontend: puesta en marcha
+### Datos semilla
+
+`seed_catalog` crea **3 categorías** (Tecnología, Hogar y Accesorios) y **9 productos** con precio, existencias e imagen. El comando es idempotente: si se ejecuta otra vez, actualiza los mismos registros en lugar de duplicarlos.
+
+- Las imágenes se generan con **Pillow** en `backend/catalog/seed_images/` y se versionan en git.
+- Al ejecutar el comando se copian a `backend/media/products/`, que es el `MEDIA_ROOT` local.
+- En modo `DEBUG=1`, Django sirve `/media/` mediante `static()` en `config/urls.py`.
+
+La API de cuestionarios de la semana 12 se puede sembrar aparte con `python manage.py seed_quiz --show-tokens` (opcional para este laboratorio).
+
+### Variables de entorno del servidor
+
+| Variable | Valor por defecto | Uso |
+|---|---|---|
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Orígenes exactos separados por comas. El comodín `*` está prohibido. |
+| `DJANGO_DEBUG` | `1` | `0` para desactivar el modo de desarrollo. |
+| `DJANGO_SECRET_KEY` | — | Obligatoria si `DJANGO_DEBUG=0`. En desarrollo se usa `.secret_key`, ignorado por git. |
+| `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1,testserver` | Obligatoria si `DJANGO_DEBUG=0`. |
+
+Hay un `backend/.env.example` con los valores de referencia. No se guardan credenciales en el repositorio.
+
+## Cliente: puesta en marcha
+
+En otra terminal, desde la raíz:
 
 ```powershell
 cd frontend
 npm install
 Copy-Item .env.example .env
-```
-
-Editar `frontend/.env` y poner el token de la persona:
-
-```dotenv
-VITE_API_BASE_URL=http://127.0.0.1:8000/api
-VITE_API_TOKEN=el-token-que-imprime-seed_quiz
-```
-
-Arrancar Vite:
-
-```powershell
 npm run dev
 ```
 
-La aplicación queda en **http://localhost:5173**:
+Vite sirve la aplicación en `http://localhost:5173`. El archivo `frontend/.env` (ignorado por git) define:
+
+```dotenv
+VITE_API_BASE_URL=http://127.0.0.1:8000/api
+VITE_API_TOKEN=opcional-solo-para-la-api-de-examenes
+```
+
+`VITE_API_TOKEN` solo es necesario para la sección de exámenes de la semana 12. El catálogo no lo usa.
+
+### Rutas del cliente
 
 | Ruta | Pantalla |
 |---|---|
-| `/` | Cartelera de cine del laboratorio 11 |
-| `/exams` | Listado paginado de exámenes |
-| `/exams/new` | Formulario de alta de examen |
+| `/` | Cartelera de cine (semana 11) |
+| `/exams` | Exámenes (semana 12) |
+| `/catalog` | Catálogo de productos |
+| `/catalog/new` | Alta de producto |
+| `/catalog/:id/edit` | Edición de producto |
 
-### Variables de entorno del frontend
+## API del catálogo
 
-| Variable | Valor por defecto | Uso |
+| Método | Ruta | Descripción |
 |---|---|---|
-| `VITE_API_BASE_URL` | `http://127.0.0.1:8000/api` | Dirección base única de Axios. |
-| `VITE_API_TOKEN` | — | Token de la API; se envía como `Authorization: Token ...`. |
-| `VITE_APP_TITLE` | `Cartelera de Cine` | Título visible de la cabecera. |
+| `GET` | `/api/categories/` | Lista completa de categorías (sin paginar, para el desplegable). |
+| `POST` | `/api/categories/` | Crea una categoría. |
+| `GET` | `/api/categories/{id}/` | Detalle de una categoría. |
+| `PUT/PATCH` | `/api/categories/{id}/` | Actualiza una categoría. |
+| `DELETE` | `/api/categories/{id}/` | Elimina una categoría. |
+| `GET` | `/api/products/` | Lista paginada de productos con la categoría anidada. |
+| `GET` | `/api/products/?category={id}` | Filtra por categoría. |
+| `POST` | `/api/products/` | Crea un producto (multipart si incluye imagen). |
+| `GET` | `/api/products/{id}/` | Detalle de un producto. |
+| `PUT/PATCH` | `/api/products/{id}/` | Actualiza un producto. |
+| `DELETE` | `/api/products/{id}/` | Elimina un producto. |
 
-> El token de Vite se incrusta en el paquete del navegador. Es aceptable para este laboratorio local, pero en producción no debe exponerse un token permanente: conviene usar un backend intermedio o tokens de corta duración.
+Cada producto se devuelve con `category: {id, name, description}` en la misma respuesta. Para escribir se envía `category_id`, un campo de solo escritura. El listado usa `PageNumberPagination` con `PAGE_SIZE = 5`.
 
-## CORS: qué origen espera cada lado
-
-- El navegador abre React en `http://localhost:5173`.
-- Django autoriza **solo** los orígenes exactos de `CORS_ALLOWED_ORIGINS`; por defecto, `http://localhost:5173`.
-- No se usa `CORS_ALLOW_ALL_ORIGINS` ni el comodín `*`.
-- `CORS_ALLOW_CREDENTIALS = False` porque la autenticación viaja en la cabecera `Authorization`, no en cookies.
-- Si Vite se abre como `http://127.0.0.1:5173`, hay que añadir ese origen exacto a la variable.
-
-El middleware de CORS está justo después de `SecurityMiddleware` y antes de los demás. La configuración está en `backend/config/settings.py`.
-
-## Comportamiento de la pantalla de exámenes
-
-Al entrar en `/exams` se ejecuta un `GET` dentro de `useEffect` contra `/api/exams/` con el token configurado.
-
-| Estado | Qué se muestra |
-|---|---|
-| Carga | Esqueleto de tabla con filas animadas y aviso accesible «Cargando exámenes…». |
-| Datos | Tabla con ID, título, número de preguntas, fecha y acciones. Si hay más de una página, botones **Anterior** y **Siguiente** usando `previous` y `next`. |
-| Error | Panel con título específico y botón **Reintentar**. Si no hubo respuesta: «No se pudo conectar con el servidor». Si hubo respuesta HTTP: código (`HTTP 400`, `HTTP 401`, etc.) y detalle devuelto por la API. |
-| Vacío | Mensaje «No hay exámenes registrados» y enlace para crear el primero. |
-
-El borrado pide confirmación, deshabilita solo la fila afectada mientras la petición está en curso y recarga la página actual de la lista sin recargar el navegador. El alta usa entradas controladas, `preventDefault`, `POST` con JSON y navegación al listado; el nuevo registro se busca en las páginas para que quede visible aunque no esté en la primera.
-
-## Pruebas y evidencias
+## Pruebas y calidad
 
 ```powershell
 # Backend
 cd backend
-python manage.py test
+.\.venv\Scripts\python.exe manage.py test
 
 # Frontend
 cd frontend
-npm test
-npm run build
+npm run test
 npm run lint
+npm run build
 ```
 
-Resultados de la última ejecución:
-
-- Backend: **372 pruebas OK** (incluye 7 de CORS en `quiz/tests/test_cors.py`).
-- Frontend: **58 pruebas OK** en 11 archivos.
-- `npm run build`: correcto.
-- `npm run lint`: sin errores ni advertencias.
-
-Las pruebas de CORS con `curl`, el error de CORS provocado, el error de validación, el servidor apagado y las capturas están documentados en `docs/evidencias.md` y `docs/capturas/`.
-
-Para repetir las capturas con Playwright:
+Las capturas de evidencia se generan con Playwright desde `frontend/`:
 
 ```powershell
-cd frontend
-npx playwright install chromium
-node scripts/capture-s12-evidence.mjs
+node scripts/capture-s13-evidence.mjs catalog
+node scripts/capture-s13-evidence.mjs api
+$env:S13_ADMIN_USER="admin"; $env:S13_ADMIN_PASSWORD="…"; node scripts/capture-s13-evidence.mjs admin
+node scripts/capture-s13-evidence.mjs error   # con Django apagado
 ```
 
-El script guarda las imágenes en `docs/capturas/` y usa `http://localhost:5173` como origen. Para el modo de error sin conexión, se ejecuta `node scripts/capture-s12-evidence.mjs error` con Django apagado; para el modo de CORS, `node scripts/capture-s12-evidence.mjs cors` con un origen no autorizado.
+## Entregable
 
-## Solución de problemas
-
-| Síntoma | Causa probable | Solución |
-|---|---|---|
-| `401 Unauthorized` | Token ausente o incorrecto | Revisar `VITE_API_TOKEN` y reiniciar Vite. |
-| Error de CORS en la consola | Origen no listado | Añadir el origen exacto a `CORS_ALLOWED_ORIGINS` y reiniciar Django. |
-| «No se pudo conectar con el servidor» | Django apagado o dirección incorrecta | Arrancar `runserver` y revisar `VITE_API_BASE_URL`. |
-| El formulario muestra «Este campo no puede estar en blanco» | La API respondió 400 | Es el comportamiento esperado con el título vacío. |
-| El nuevo examen no aparece | Se está mirando otra página | La pantalla busca la página que contiene el registro creado. |
-
-## Decisiones tomadas
-
-- Se añadió `react-router-dom` porque el proyecto de React no tenía enrutado.
-- Se extrajo `useTheme` para compartir el tema entre la cartelera y las páginas de exámenes sin duplicar lógica.
-- La cabecera oculta el contador de favoritos fuera de la cartelera para no mostrar un dato engañoso.
-- El token se entrega por variable de entorno de Vite y solo se versiona `.env.example`.
-- Se añadieron pruebas de CORS en el backend y pruebas unitarias del formulario y del normalizador de errores en el frontend.
-
-## Pendiente manual
-
-- Captura de la estructura del proyecto en el editor. El árbol de referencia está en `docs/estructura.txt`.
+- `entregable/ENTREGABLE.md`: diagrama del catálogo, tabla de la API y explicación de cada captura.
+- `entregable/diagrama-catalogo.png`: diagrama exportado como imagen.
+- `entregable/capturas/`: evidencia numerada del admin, la API, el catálogo, los estados, el alta, la edición, el borrado y la estructura del proyecto en VS Code.
